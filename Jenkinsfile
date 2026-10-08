@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'wazid2003/devops-cicd-kubernetes:v1'
+        KUBECONFIG = 'C:\\ProgramData\\Jenkins\\.jenkins\\kubeconfig'
     }
 
     stages {
@@ -26,6 +27,7 @@ pipeline {
                     usernameVariable: 'DOCKER_USERNAME',
                     passwordVariable: 'DOCKER_PASSWORD'
                 )]) {
+
                     bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
                     bat 'docker push %DOCKER_IMAGE%'
                 }
