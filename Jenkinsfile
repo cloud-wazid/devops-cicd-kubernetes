@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        KUBECONFIG = 'C:\\Users\\hp\\.kube\\config'
+    }
+
     stages {
 
         stage('Checkout') {
@@ -12,6 +16,12 @@ pipeline {
         stage('Docker Build') {
             steps {
                 bat 'docker build -t devops-app:v1 .'
+            }
+        }
+
+        stage('Load Image into Minikube') {
+            steps {
+                bat 'minikube image load devops-app:v1'
             }
         }
 
