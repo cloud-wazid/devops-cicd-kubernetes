@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         KUBECONFIG = 'C:\\Users\\hp\\.kube\\config'
+        MINIKUBE_HOME = 'C:\\Users\\hp\\.minikube'
     }
 
     stages {
@@ -21,6 +22,7 @@ pipeline {
 
         stage('Load Image into Minikube') {
             steps {
+                bat 'minikube profile list'
                 bat 'minikube image load devops-app:v1'
             }
         }
