@@ -2,28 +2,33 @@ pipeline {
     agent any
 
     environment {
-        KUBECONFIG = 'C:\\Users\\hp\\.kube\\config'
-        MINIKUBE_HOME = 'C:\\Users\\hp\\.minikube'
+        DOCKER_IMAGE = 'wazid2003/devops-cicd-kubernetes:v1'
     }
 
     stages {
 
         stage('Checkout') {
             steps {
-                echo 'Code checkout stage'
+                echo 'Checking out source code from GitHub'
             }
         }
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t devops-app:v1 .'
+                bat 'docker build -t %DOCKER_IMAGE% .'
             }
         }
 
-        stage('Load Image into Minikube') {
+        stage('DockerHub Push') {
             steps {
-                bat 'minikube profile list'
-                bat 'minikube image load devops-app:v1'
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
+                    bat 'docker push %DOCKER_IMAGE%'
+                }
             }
         }
 

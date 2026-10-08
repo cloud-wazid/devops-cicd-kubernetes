@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: devops-app
-          image: devops-app:v1
-          imagePullPolicy: Never
+          image: wazid2003/devops-cicd-kubernetes:v1
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
